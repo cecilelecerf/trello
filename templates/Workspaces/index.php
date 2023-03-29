@@ -9,7 +9,7 @@
     <h3><?= __('Workspaces') ?></h3>
     <ul>
         <?php foreach($workspaces as $workspace): ;?>
-            <li><?=$workspace->name?></li>
+            <li><?= $this->HTML->link($workspace->name, ['action' => 'view', $workspace->id])?></li>
         <?php endforeach?>
    </ul>
 </div>
