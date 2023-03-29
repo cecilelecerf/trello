@@ -8,7 +8,8 @@
     <?= $this->Html->link(__('New Workspace'), ['action' => 'add'], ['class' => 'button float-right']) ?>
     <h3><?= __('Workspaces') ?></h3>
    <ul>
-        <?php foreach():?>
+        <?php foreach($workspaces as $workspace):?>
+
         <?php endforeach?>
    </ul>
 </div>
