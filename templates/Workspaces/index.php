@@ -1,0 +1,14 @@
+<?php
+/**
+ * @var \App\View\AppView $this
+ * @var iterable<\App\Model\Entity\Workspace> $workspaces
+ */
+?>
+<div class="workspaces index content">
+    <?= $this->Html->link(__('New Workspace'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <h3><?= __('Workspaces') ?></h3>
+   <ul>
+        <?php foreach():?>
+        <?php endforeach?>
+   </ul>
+</div>
