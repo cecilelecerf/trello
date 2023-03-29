@@ -7,9 +7,9 @@
 <div class="workspaces index content">
     <?= $this->Html->link(__('New Workspace'), ['action' => 'add'], ['class' => 'button float-right']) ?>
     <h3><?= __('Workspaces') ?></h3>
-   <ul>
-        <?php foreach($workspaces as $workspace):?>
-
+    <ul>
+        <?php foreach($workspaces as $workspace): ;?>
+            <li><?=$workspace->name?></li>
         <?php endforeach?>
    </ul>
 </div>

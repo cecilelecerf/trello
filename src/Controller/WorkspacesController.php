@@ -19,7 +19,6 @@ class WorkspacesController extends AppController
     public function index()
     {
         $workspaces = $this->Workspaces->findByAdmin($this->request->getAttribute('identity')->id);
-        var_dump($workspaces);
         // les transmets à la vue
 
 
@@ -53,7 +52,7 @@ class WorkspacesController extends AppController
         $workspace = $this->Workspaces->newEmptyEntity();
         if ($this->request->is('post')) {
             $workspace = $this->Workspaces->patchEntity($workspace, $this->request->getData());
-            $workspace->admin=1;
+            $workspace->admin= $this->request->getAttribute('identity')->id;
             var_dump($workspace->admin);
             if ($this->Workspaces->save($workspace)) {
                 $this->Flash->success(__('The workspace has been saved.'));
