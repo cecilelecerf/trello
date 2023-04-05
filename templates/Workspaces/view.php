@@ -19,6 +19,7 @@
             <div style="background-color:<?= h($categories->color)?>" class="card-img-top"></div>
             <h2 class="card-title text-center"><?= h($categories->name) ?></h2>
             <ul class="card-body">
+
                 <!-- liste de tous les cards -->
                 <?php foreach($categories->cards as $cards): ?>
                     <li>
@@ -29,6 +30,8 @@
                             <p><?= h($cards->manager) ?></p>
                         </div>
                     </li>
+
+                    
                 <?php endforeach?>
             </ul>
 
@@ -36,43 +39,80 @@
             <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#CardAddModal">
                 Add Cards
             </button>
+            
+            <!-- ajout nouvelle card en modal-->
+            <div class="modal fade" id="CardAddModal" tabindex="-1" aria-labelledby="CardAddLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="CardAddLabel"><?= __('Add Card') ?></h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <?= $this->Form->create($newCards, ['url' => ['controller' => 'Cards', 'action' => 'add']]) ?>
+                                <fieldset>
+                                <?php
+                                    echo $this->Form->control('title');
+                                    echo $this->Form->control('description');
+                                    echo $this->Form->control('creator', 
+                                        ['type'=>'hidden', 'value' => $this->request->getAttribute('identity')->id]);
+                                    echo $this->Form->control('manager');
+                                    echo $this->Form->control('deadline', ['empty' => true]);
+                                    echo $this->Form->control('category_id', 
+                                        ['type'=>'hidden', 
+                                        'value' => $categories->id]);
+                                    echo $this->Form->control('workspace_id', 
+                                        ['type'=>'hidden', 
+                                        'value' => $workspace->id]);
+                                ?>
+                            </fieldset>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Close</button>
+                                <?= $this->Form->button(__('Submit'), [
+                                    'class' => 'btn btn-primary'
+                                ]) ?>
+                                <?= $this->Form->end() ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </li>
     <?php endforeach; ?>
 
 </ul>   
-<div class="modal fade" id="CardAddModal" tabindex="-1" aria-labelledby="CardAddLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="CardAddLabel">Modal title</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <?= $this->Form->create($card) ?>
-            <fieldset>
-            <legend><?= __('Add Card') ?></legend>
-            <?php
-                echo $this->Form->control('title');
-                echo $this->Form->control('description');
-                echo $this->Form->control('creator');
-                echo $this->Form->control('manager');
-                echo $this->Form->control('deadline', ['empty' => true]);
-                echo $this->Form->control('category_id', ['options' => $categories]);
-            ?>
-        </fieldset>
-        <?= $this->Form->button(__('Submit')) ?>
-        <?= $this->Form->end() ?>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#CategoryAddModal">
+    Add Category
+</button>
+
+<!-- ajout nouvelle category en modal-->
+<div class="modal fade" id="CategoryAddModal" tabindex="-1" aria-labelledby="CategoryAddLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="CategoryAddLabel"><?= __('Add Card') ?></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <?= $this->Form->create($newCategories, ['url' => ['controller' => 'Categories', 'action' => 'add']]) ?>
+                <fieldset>
+                    <legend><?= __('Add Category') ?></legend>
+                    <?php
+                        echo $this->Form->control('name');
+                        echo $this->Form->control('color');
+                        echo $this->Form->control('workspace_id', [
+                            'value' => $workspace->id,
+                            'type' => 'hidden'
+                        ]);
+                    ?>
+                </fieldset>
+                <?= $this->Form->button(__('Submit')) ?>
+                <?= $this->Form->end() ?>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
-
-
-<?= $this->Html->link(__('Add categories'), ['controller' => 'Categories', 'action' => 'add'], ['class' => 'btn btn-primary']) ?>
 
 
 

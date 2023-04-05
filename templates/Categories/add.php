@@ -20,7 +20,8 @@
                 <?php
                     echo $this->Form->control('name');
                     echo $this->Form->control('color');
-                    echo $this->Form->control('workspace_id', ['options' => $workspaces]);
+                    echo $this->Form->control('workspace_id', [
+                        'options' => $workspaces]);
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

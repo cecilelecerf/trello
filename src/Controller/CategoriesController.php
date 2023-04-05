@@ -48,10 +48,12 @@ class CategoriesController extends AppController
             if ($this->Categories->save($category)) {
                 $this->Flash->success(__('The category has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The category could not be saved. Please, try again.'));
+            else{
+                $this->Flash->error(__('The category could not be saved. Please, try again.'));
+            }
         }
+        return $this->redirect(['controller'=>'Workspaces', 'action' => 'view', $this->request->getData('workspace_id')]);
         $workspaces = $this->Categories->Workspaces->find('list', ['limit' => 200])->all();
         $this->set(compact('category', 'workspaces'));
     }

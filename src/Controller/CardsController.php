@@ -53,14 +53,12 @@ class CardsController extends AppController
         if ($this->request->is('post')) {
             $card = $this->Cards->patchEntity($card, $this->request->getData());
             if ($this->Cards->save($card)) {
-                $this->Flash->success(__('The card has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+                $this->Flash->success(__('The card has been saved.'));  
             }
-            $this->Flash->error(__('The card could not be saved. Please, try again.'));
+            else
+                $this->Flash->error(__('The card could not be saved. Please, try again.'));
         }
-        $categories = $this->Cards->Categories->find('list', ['limit' => 200])->all();
-        $this->set(compact('card', 'categories'));
+        return $this->redirect(['controller' => 'Workspaces', 'action' => 'view', $this->request->getData('workspace_id')]);
     }
 
     /**
