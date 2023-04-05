@@ -4,6 +4,86 @@
  * @var \App\Model\Entity\Workspace $workspace
  */
 ?>
+<section class="d-flex justify-content-between align-items-center mb-5">
+    <h1><?= h($workspace->name) ?></h1>
+    <div class="d-flex justify-content-between w-50">
+        <?= $this->Html->link(__('Edit Workspace'), ['action' => 'edit', $workspace->id], ['class' => 'side-nav-item']) ?>
+        <?= $this->Form->postLink(__('Delete Workspace'), ['action' => 'delete', $workspace->id], ['confirm' => __('Are you sure you want to delete # {0}?', $workspace->id), 'class' => 'side-nav-item']) ?>
+        <p>Member list</p>
+        <P><?= __('Related Logs') ?></P>
+    </div>
+</section>
+<ul id="categories">
+    <?php foreach ($workspace->categories as $categories) : ?>
+        <li class="card ">   
+            <div style="background-color:<?= h($categories->color)?>" class="card-img-top"></div>
+            <h2 class="card-title text-center"><?= h($categories->name) ?></h2>
+            <ul class="card-body">
+                <!-- liste de tous les cards -->
+                <?php foreach($categories->cards as $cards): ?>
+                    <li>
+                        <h3><?= h($cards->title) ?></h3>
+                        <p><?= h($cards->description) ?></p>
+                        <div class="d-flex">
+                            <p><?= h($cards->deadline) ?></p>
+                            <p><?= h($cards->manager) ?></p>
+                        </div>
+                    </li>
+                <?php endforeach?>
+            </ul>
+
+
+            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#CardAddModal">
+                Add Cards
+            </button>
+        </li>
+    <?php endforeach; ?>
+
+</ul>   
+<div class="modal fade" id="CardAddModal" tabindex="-1" aria-labelledby="CardAddLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="CardAddLabel">Modal title</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <?= $this->Form->create($card) ?>
+            <fieldset>
+            <legend><?= __('Add Card') ?></legend>
+            <?php
+                echo $this->Form->control('title');
+                echo $this->Form->control('description');
+                echo $this->Form->control('creator');
+                echo $this->Form->control('manager');
+                echo $this->Form->control('deadline', ['empty' => true]);
+                echo $this->Form->control('category_id', ['options' => $categories]);
+            ?>
+        </fieldset>
+        <?= $this->Form->button(__('Submit')) ?>
+        <?= $this->Form->end() ?>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<?= $this->Html->link(__('Add categories'), ['controller' => 'Categories', 'action' => 'add'], ['class' => 'btn btn-primary']) ?>
+
+
+
+        <td><?= h($categories->created) ?></td>
+        <td><?= h($categories->modified) ?></td>
+        <td class="actions">
+            <?= $this->Html->link(__('View'), ['controller' => 'Categories', 'action' => 'view', $categories->id]) ?>
+            <?= $this->Html->link(__('Edit'), ['controller' => 'Categories', 'action' => 'edit', $categories->id]) ?>
+            <?= $this->Form->postLink(__('Delete'), ['controller' => 'Categories', 'action' => 'delete', $categories->id], ['confirm' => __('Are you sure you want to delete # {0}?', $categories->id)]) ?>
+        </td>
+
 <div class="row">
     <aside class="column">
         <div class="side-nav">

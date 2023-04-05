@@ -36,7 +36,7 @@ class WorkspacesController extends AppController
     public function view($id = null)
     {
         $workspace = $this->Workspaces->get($id, [
-            'contain' => ['Users', 'Categories', 'Logs'],
+            'contain' => ['Users', 'Categories.Cards', 'Logs'],
         ]);
 
         $this->set(compact('workspace'));
