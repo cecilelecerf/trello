@@ -5,10 +5,10 @@
  */
 ?>
 <div class="users index content">
-    <?= $this->Html->link(__('New User'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?= $this->Html->link(__('New User'), ['action' => 'add'], ['class' => 'btn btn-outline-secondary']) ?>
     <h3><?= __('Users') ?></h3>
-    <div class="table-responsive">
-        <table>
+    <div>
+        <table class="table">
             <thead>
                 <tr>
                     <th><?= $this->Paginator->sort('id') ?></th>
@@ -40,10 +40,10 @@
     <div class="paginator">
         <ul class="pagination">
             <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
+            <?= $this->Paginator->prev('< ' . __('previous'), ['class' => 'page-item']) ?>
+            <?= $this->Paginator->numbers(['class' => 'page-item']) ?>
+            <?= $this->Paginator->next(__('next') . ' >', ['class' => 'page-item']) ?>
+            <?= $this->Paginator->last(__('last') . ' >>', ['class' => 'page-item']) ?>
         </ul>
         <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?></p>
     </div>

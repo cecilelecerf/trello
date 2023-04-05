@@ -52,14 +52,4 @@ class AppController extends Controller
 
         $this->loadComponent('Authentication.Authentication');
     }
-
-
-    public function beforeFilter(\Cake\Event\EventInterface $event)
-    {
-        parent::beforeFilter($event);
-        // pour tous les contrôleurs de notre application, rendre les actions
-        // index et view publiques, en ignorant la vérification d'authentification
-        $this->Authentication->addUnauthenticatedActions(['index', 'view']);
-    }
-
 }

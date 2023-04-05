@@ -29,24 +29,37 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 
     <link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet">
 
-    <?= $this->Html->css(['workspaces', 'index']) ?>
+    <?= $this->Html->css(['bootstrap.min', 'index', 'workspaces']) ?>
+    <?= $this->Html->script(['bootstrap.bundle.min']) ?>
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script') ?>
 </head>
 <body>
-    <nav class="top-nav">
-        <div class="top-nav-title">
+    <nav class="navbar justify-content-center bg-primary-subtle mb-20$">
+        <div class="navbar-brand">
             <a href="<?= $this->Url->build('/') ?>">TRELLO</a>
         </div>
-        <div class="top-nav-links">
-            <?= $this->Html->link('Workspaces', ['controller' => 'workspaces', 'action'=> 'index'])?>
+        <div class="navbar-nav d-flex flex-row w-25 justify-content-between">
+            <?= $this->Html->link('Workspaces', 
+                ['controller' => 'workspaces', 'action'=> 'index'], 
+                ['class' => 'nav-link ']
+                
+            )?>
+
             <?php if($this->request->getAttribute('identity')==null):?>
-                <?= $this->Html->link('login', ['controller' => 'Users', 'action'=> 'login'])?>
-                <?= $this->Html->link('Add user', ['controller' => 'Users', 'action'=> 'add'])?>
+                <?= $this->Html->link('login', 
+                    ['controller' => 'Users', 'action'=> 'login'],
+                    ['class' => 'nav-link ']
+                )?>
+                <?= $this->Html->link('Add user', ['controller' => 'Users', 'action'=> 'add'],['class' => 'nav-link '])?>
             <?php else:  ?>
-                <?= $this->Html->link('logout ('.$this->request->getAttribute('identity')->login.')', ['controller' => 'Users', 'action'=> 'logout'])?>
+                <?= $this->Html->link('Users list', 
+                    ['controller' => 'Users', 'action'=> 'index'],
+                    ['class' => 'nav-link ']
+                )?>
+                <?= $this->Html->link('Logout '.($this->request->getAttribute('identity')->login), ['controller' => 'Users', 'action'=> 'logout'], ['class' => 'nav-link '])?>
             <?php endif; ?>
         </div>
     </nav>
