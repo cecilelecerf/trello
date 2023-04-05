@@ -103,6 +103,6 @@ class CardsController extends AppController
             $this->Flash->error(__('The card could not be deleted. Please, try again.'));
         }
 
-        return $this->redirect(['action' => 'index']);
+        return $this->redirect(['controller' => 'Workspaces','action' => 'view', $this->request->getData('workspace_id')]);
     }
 }

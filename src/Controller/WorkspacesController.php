@@ -39,7 +39,7 @@ class WorkspacesController extends AppController
     {
 
         $workspace = $this->Workspaces->get($id, [
-            'contain' => ['Users', 'Categories.Cards', 'Logs', 'Categories'],
+            'contain' => ['Users', 'Categories.Cards', 'Logs'],
         ]);
 
 

@@ -18,9 +18,21 @@ form {
 }
 
 #categories .card {
-    max-width: 25%;
+    min-width: 220px;
     .card-img-top{
         height: 50px;
+    }
+}
+
+
+#CardOpenModal{
+    .modal-header {
+        p{
+            margin: unset;
+        }
+    }
+    .modal-footer > *{
+        margin: 0 15px !important;
     }
 }
 

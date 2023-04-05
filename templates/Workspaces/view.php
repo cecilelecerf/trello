@@ -13,78 +13,119 @@
         <P><?= __('Related Logs') ?></P>
     </div>
 </section>
-<ul id="categories">
+<ul id="categories" class="d-flex justify-content-between flex-wrap ">
     <?php foreach ($workspace->categories as $categories) : ?>
-        <li class="card ">   
+        <li class="card w-25 m-2">   
             <div style="background-color:<?= h($categories->color)?>" class="card-img-top"></div>
             <h2 class="card-title text-center"><?= h($categories->name) ?></h2>
             <ul class="card-body">
 
-                <!-- liste de tous les cards -->
+                <!-- liste de tous les cards + Modal Open Card-->
                 <?php foreach($categories->cards as $cards): ?>
-                    <li>
-                        <h3><?= h($cards->title) ?></h3>
-                        <p><?= h($cards->description) ?></p>
-                        <div class="d-flex">
-                            <p><?= h($cards->deadline) ?></p>
-                            <p><?= h($cards->manager) ?></p>
-                        </div>
+                    <li class="card border-primary my-3" data-bs-toggle="modal" data-bs-target="#CardOpenModal">
+                        <h3 class="card-title card-header"><?= h($cards->title) ?></h3>
+                        <section class="card-body">
+                            <p class="card-text "><?= h($cards->description) ?></p>
+                            <div class="d-flex">
+                                <p class="card-text "><?= h($cards->deadline) ?></p>
+                                <p class="card-text "><?= h($cards->manager) ?></p>
+                            </div>
+
+                        </section>
                     </li>
 
                     
                 <?php endforeach?>
             </ul>
 
-
+            <!-- Button modal Add Card -->
             <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#CardAddModal">
                 Add Cards
             </button>
             
-            <!-- ajout nouvelle card en modal-->
-            <div class="modal fade" id="CardAddModal" tabindex="-1" aria-labelledby="CardAddLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="CardAddLabel"><?= __('Add Card') ?></h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <?= $this->Form->create($newCards, ['url' => ['controller' => 'Cards', 'action' => 'add']]) ?>
-                                <fieldset>
-                                <?php
-                                    echo $this->Form->control('title');
-                                    echo $this->Form->control('description');
-                                    echo $this->Form->control('creator', 
-                                        ['type'=>'hidden', 'value' => $this->request->getAttribute('identity')->id]);
-                                    echo $this->Form->control('manager');
-                                    echo $this->Form->control('deadline', ['empty' => true]);
-                                    echo $this->Form->control('category_id', 
-                                        ['type'=>'hidden', 
-                                        'value' => $categories->id]);
-                                    echo $this->Form->control('workspace_id', 
-                                        ['type'=>'hidden', 
-                                        'value' => $workspace->id]);
-                                ?>
-                            </fieldset>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Close</button>
-                                <?= $this->Form->button(__('Submit'), [
-                                    'class' => 'btn btn-primary'
-                                ]) ?>
-                                <?= $this->Form->end() ?>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
         </li>
     <?php endforeach; ?>
 
 </ul>   
 
+<!--Button Modal Add Category -->
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#CategoryAddModal">
     Add Category
 </button>
+
+
+<!-- Open card en modal-->
+<div class="modal fade" id="CardOpenModal" tabindex="-1" aria-labelledby="CardOpenLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="CardOpenLabel"><?= h($cards->title) ?> <span> </span> </h1>
+                <p class="text-secondary">  - Deadline : <?= h($cards->deadline)?></p>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <section class="modal-body">
+                <p><?= h($cards->description)?></p>
+                <div>
+                    <p><span class="text-secondary">Manager : </span><?= h($cards->manager)?></p>
+                    <p><span class="text-secondary">Membre : </span><?= h($cards)?>
+                    </p>
+                </div>
+            </section>
+            <section class="modal-footer">
+
+                <?= $this->Form->postLink(__('Delete'), 
+                ['controller'=>'Cards', 'action' => 'delete', $cards->id], 
+                [
+                    'class' => 'side-nav-item', 
+                    'confirm' => __('Are you sure you want to delete card :', $categories->id)
+                ])?>
+
+                <p class="text-secondary">Author : <?= h($cards->creator)?></p>
+                <p class="text-secondary">Last modified : <?= h($cards->modified)?></p>
+            </section>
+        </div>
+    </div>
+</div>
+
+
+<!-- ajout nouvelle card en modal-->
+<div class="modal fade" id="CardAddModal" tabindex="-1" aria-labelledby="CardAddLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="CardAddLabel"><?= __('Add Card') ?></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <?= $this->Form->create($newCards, ['url' => ['controller' => 'Cards', 'action' => 'add']]) ?>
+                    <fieldset>
+                    <?php
+                        echo $this->Form->control('title');
+                        echo $this->Form->control('description');
+                        echo $this->Form->control('creator', 
+                            ['type'=>'hidden', 'value' => $this->request->getAttribute('identity')->id]);
+                        echo $this->Form->control('manager');
+                        echo $this->Form->control('deadline', ['empty' => true]);
+                        echo $this->Form->control('category_id', 
+                            ['type'=>'hidden', 
+                            'value' => $categories->id]);
+                        echo $this->Form->control('workspace_id', 
+                            ['type'=>'hidden', 
+                            'value' => $workspace->id]);
+                    ?>
+                </fieldset>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Close</button>
+                    <?= $this->Form->button(__('Submit'), [
+                        'class' => 'btn btn-primary'
+                    ]) ?>
+                    <?= $this->Form->end() ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- ajout nouvelle category en modal-->
 <div class="modal fade" id="CategoryAddModal" tabindex="-1" aria-labelledby="CategoryAddLabel" aria-hidden="true">
