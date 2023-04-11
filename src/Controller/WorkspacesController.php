@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\ORM\TableRegistry;
+
 /**
  * Workspaces Controller
  *
@@ -35,11 +37,18 @@ class WorkspacesController extends AppController
      */
     public function view($id = null)
     {
+
         $workspace = $this->Workspaces->get($id, [
-            'contain' => ['Users', 'Categories', 'Logs'],
+            'contain' => ['Users', 'Categories.Cards', 'Logs'],
         ]);
 
-        $this->set(compact('workspace'));
+
+        $categories = TableRegistry::getTableLocator()->get('Categories');
+        $cards = TableRegistry::getTableLocator()->get('Cards');
+        $newCategories = $categories->newEmptyEntity();  
+        $newCards = $cards->newEmptyEntity();   
+
+        $this->set(compact('workspace', 'newCards', 'newCategories'));
     }
 
     /**
