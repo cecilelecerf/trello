@@ -47,8 +47,11 @@ class WorkspacesController extends AppController
         $cards = TableRegistry::getTableLocator()->get('Cards');
         $newCategories = $categories->newEmptyEntity();  
         $newCards = $cards->newEmptyEntity();   
+        $editCards = $cards->get($id, [
+            'contain' => [],
+        ]);
 
-        $this->set(compact('workspace', 'newCards', 'newCategories'));
+        $this->set(compact('workspace', 'newCards', 'newCategories', 'editCards'));
     }
 
     /**
@@ -117,5 +120,16 @@ class WorkspacesController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    public function stats(){
+        $users = TableRegistry::getTableLocator()->get('Users');
+        $users = $users->find('list', ['limit' => 200])->all();
+        $categories = TableRegistry::getTableLocator()->get('Categories');
+        $categories = $categories->find('list', ['limit' => 200])->all();
+        $cards = TableRegistry::getTableLocator()->get('Cards');
+        $cards = $cards->find('list', ['limit' => 200])->all();
+        $workspaces = $this->Workspaces->find('list', ['limit' => 200])->all();
+        $this->set(compact('cards', 'users', 'categories', 'workspaces'));
     }
 }

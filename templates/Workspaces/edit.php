@@ -5,31 +5,37 @@
  * @var string[]|\Cake\Collection\CollectionInterface $users
  */
 ?>
-<div class="row">
-    <aside class="column">
-        <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Form->postLink(
-                __('Delete'),
-                ['action' => 'delete', $workspace->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $workspace->id), 'class' => 'side-nav-item']
-            ) ?>
-            <?= $this->Html->link(__('List Workspaces'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-        </div>
-    </aside>
-    <div class="column-responsive column-80">
-        <div class="workspaces form content">
-            <?= $this->Form->create($workspace) ?>
-            <fieldset>
-                <legend><?= __('Edit Workspace') ?></legend>
-                <?php
-                    echo $this->Form->control('name');
-                    echo $this->Form->control('admin');
-                    echo $this->Form->control('users._ids', ['options' => $users]);
-                ?>
-            </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
-            <?= $this->Form->end() ?>
-        </div>
+<div class="workspaces form content">
+    <?= $this->Form->create($workspace) ?>
+    <fieldset class="mb-3">
+        <legend><?= __('Edit Workspace') ?></legend>
+        <?php
+            echo $this->Form->control('name', [
+                'label' => ['class' => 'form-label label'], 
+                'class'=> ['form-control'],
+                'templates' => [
+                    'inputContainer' => '<div class="input-group-default mb-3 {{type}}{{required}}">{{content}}</div>'
+                ],
+            ]);
+            echo $this->Form->control('admin', [
+                'label' => ['class' => 'form-label label'], 
+                'class'=> ['form-control'],
+                'templates' => [
+                    'inputContainer' => '<div class="input-group-default mb-3 {{type}}{{required}}">{{content}}</div>'
+                ],
+            ]);
+            echo $this->Form->control('users._ids', ['options' => $users, 'label' => ['class' => 'form-label label'], 
+            'class'=> ['form-control'],
+            'templates' => [
+                'inputContainer' => '<div class="input-group-default mb-3 {{type}}{{required}}">{{content}}</div>'
+            ],]);
+        ?>
+    </fieldset>
+    <div class="d-flex">
+        <?= $this->Form->button(__('Submit'), ['class' => 'btn btn-primary me-3']) ?>
+        <?= $this->Form->end() ?>
+        <?= $this->HTML->link('Back', ['action' => 'view', $workspace->id], ['class' => 'btn btn-outline-primary'])?>
     </div>
 </div>
+
+

@@ -29,7 +29,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 
     <link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet">
 
-    <?= $this->Html->css(['bootstrap.min', 'index', 'workspaces']) ?>
+    <?= $this->Html->css(['bootstrap.min', 'all.min','index', 'workspaces']) ?>
     <?= $this->Html->script(['bootstrap.bundle.min']) ?>
 
     <?= $this->fetch('meta') ?>
@@ -37,14 +37,19 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <?= $this->fetch('script') ?>
 </head>
 <body>
-    <nav class="navbar justify-content-center bg-primary-subtle mb-20$">
+    <nav class="navbar justify-content-center bg-primary-subtle mb-4">
         <div class="navbar-brand">
-            <a href="<?= $this->Url->build('/') ?>">TRELLO</a>
+            <a href="<?= $this->Url->build('/') ?>" class="me-2">TRELLO</a>
         </div>
         <div class="navbar-nav d-flex flex-row w-25 justify-content-between">
             <?= $this->Html->link('Workspaces', 
                 ['controller' => 'workspaces', 'action'=> 'index'], 
-                ['class' => 'nav-link ']
+                ['class' => 'nav-link']
+                
+            )?>
+            <?= $this->Html->link('Statistiques', 
+                ['controller' => 'workspaces', 'action'=> 'stats'], 
+                ['class' => 'nav-link']
                 
             )?>
 
