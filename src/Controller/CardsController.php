@@ -11,36 +11,6 @@ namespace App\Controller;
  */
 class CardsController extends AppController
 {
-    /**
-     * Index method
-     *
-     * @return \Cake\Http\Response|null|void Renders view
-     */
-    public function index()
-    {
-        $this->paginate = [
-            'contain' => ['Categories'],
-        ];
-        $cards = $this->paginate($this->Cards);
-
-        $this->set(compact('cards'));
-    }
-
-    /**
-     * View method
-     *
-     * @param string|null $id Card id.
-     * @return \Cake\Http\Response|null|void Renders view
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function view($id = null)
-    {
-        $card = $this->Cards->get($id, [
-            'contain' => ['Categories'],
-        ]);
-
-        $this->set(compact('card'));
-    }
 
     /**
      * Add method
@@ -54,6 +24,13 @@ class CardsController extends AppController
             $card = $this->Cards->patchEntity($card, $this->request->getData());
             if ($this->Cards->save($card)) {
                 $this->Flash->success(__('The card has been saved.'));  
+                $logs = $this->getTableLocator()->get('Logs');
+                $newLogs = $logs->newEntity([
+                    'content' => $card->title.': carte ajoutée',
+                    'user_id' => $this->request->getAttribute('identity')->id,
+                    'workspace_id' => $this->request->getData('workspace_id'),
+                ]);
+                $logs->save($newLogs);
             }
             else
                 $this->Flash->error(__('The card could not be saved. Please, try again.'));
@@ -70,20 +47,25 @@ class CardsController extends AppController
      */
     public function edit($id = null)
     {
-        $card = $this->Cards->get($id, [
-            'contain' => [],
-        ]);
+        $card = $this->Cards->get($id);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $card = $this->Cards->patchEntity($card, $this->request->getData());
             if ($this->Cards->save($card)) {
                 $this->Flash->success(__('The card has been saved.'));
+                $logs = $this->getTableLocator()->get('Logs');
+                $newLogs = $logs->newEntity([
+                    'content' => $card->title.': carte modifiée',
+                    'user_id' => $this->request->getAttribute('identity')->id,
+                    'workspace_id' => $this->request->getData('workspace_id'),
+                ]);
+                $logs->save($newLogs);
 
-                return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The card could not be saved. Please, try again.'));
+            else{
+                $this->Flash->error(__('The card could not be saved. Please, try again.'));
+            }
         }
-        $categories = $this->Cards->Categories->find('list', ['limit' => 200])->all();
-        $this->set(compact('card', 'categories'));
+        return $this->redirect(['controller'=>'Workspaces','action' => 'view', $this->request->getData('workspace_id')]);
     }
 
     /**
@@ -95,14 +77,24 @@ class CardsController extends AppController
      */
     public function delete($id = null)
     {
+        
         $this->request->allowMethod(['post', 'delete']);
-        $card = $this->Cards->get($id);
+        $card = $this->Cards->get($id, [
+            'contain'=>['Categories'],
+        ]);
         if ($this->Cards->delete($card)) {
+            $logs = $this->getTableLocator()->get('Logs');
+                $newLogs = $logs->newEntity([
+                    'content' => $card->title.': carte supprimé',
+                    'user_id' => $this->request->getAttribute('identity')->id,
+                    'workspace_id' => $card->category->workspace_id,
+                ]);
+            $logs->save($newLogs);
             $this->Flash->success(__('The card has been deleted.'));
         } else {
             $this->Flash->error(__('The card could not be deleted. Please, try again.'));
         }
 
-        return $this->redirect(['controller' => 'Workspaces','action' => 'view', $this->request->getData('workspace_id')]);
+        return $this->redirect(['controller' => 'Workspaces','action' => 'view', $card->category->workspace_id]);
     }
 }

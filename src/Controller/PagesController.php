@@ -31,6 +31,15 @@ use Cake\View\Exception\MissingTemplateException;
  */
 class PagesController extends AppController
 {
+    public function stats(){
+        
+        $users = $this->fetchTable('Users')->find('list', ['limit' => 200])->all();
+        $categories = $this->fetchTable('Categories')->find('list', ['limit' => 200])->all();
+        $cards = $this->fetchTable('Cards')->find('list', ['limit' => 200])->all();
+        
+        $workspaces = $this->fetchTable('Workspaces')->find('list', ['limit' => 200])->all();
+        $this->set(compact('cards', 'users', 'categories', 'workspaces'));
+    }
     /**
      * Displays a view
      *
@@ -70,4 +79,7 @@ class PagesController extends AppController
             throw new NotFoundException();
         }
     }
+
+
+
 }

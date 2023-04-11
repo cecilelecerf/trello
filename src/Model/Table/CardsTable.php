@@ -51,6 +51,16 @@ class CardsTable extends Table
             'foreignKey' => 'category_id',
             'joinType' => 'INNER',
         ]);
+        $this->belongsTo('Managinguser', [
+            'className' => 'Users',
+            'foreignKey' => 'manager',
+            'joinType' => 'INNER',
+        ]);
+        $this->belongsTo('Creatoringuser', [
+            'className' => 'Users',
+            'foreignKey' => 'creator',
+            'joinType' => 'INNER',
+        ]);
     }
 
     /**

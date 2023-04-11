@@ -56,6 +56,14 @@ class UsersTable extends Table
             'targetForeignKey' => 'workspace_id',
             'joinTable' => 'users_workspaces',
         ]);
+        $this->hasMany('Cards', [
+            'foreignKey' => 'manager',
+            // 'foreignKey' => 'creator'
+        ]);
+        
+        $this->hasMany('Cards', [
+            'foreignKey' => 'creator',
+        ]);
     }
 
     /**

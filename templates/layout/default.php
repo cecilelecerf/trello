@@ -48,7 +48,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
                 
             )?>
             <?= $this->Html->link('Statistiques', 
-                ['controller' => 'workspaces', 'action'=> 'stats'], 
+                ['controller' => 'Stats', 'action'=> 'index'], 
                 ['class' => 'nav-link']
                 
             )?>
@@ -60,10 +60,6 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
                 )?>
                 <?= $this->Html->link('Add user', ['controller' => 'Users', 'action'=> 'add'],['class' => 'nav-link '])?>
             <?php else:  ?>
-                <?= $this->Html->link('Users list', 
-                    ['controller' => 'Users', 'action'=> 'index'],
-                    ['class' => 'nav-link ']
-                )?>
                 <?= $this->Html->link('Logout '.($this->request->getAttribute('identity')->login), ['controller' => 'Users', 'action'=> 'logout'], ['class' => 'nav-link '])?>
             <?php endif; ?>
         </div>

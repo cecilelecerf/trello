@@ -54,6 +54,8 @@ class CategoriesTable extends Table
         ]);
         $this->hasMany('Cards', [
             'foreignKey' => 'category_id',
+            'dependent' => true,
+            'cascadeCallbacks'=>true,
         ]);
     }
 

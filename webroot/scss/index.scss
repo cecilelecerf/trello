@@ -17,8 +17,8 @@ form {
     }
 }
 
-#categories .card {
-    min-width: 220px;
+#categories > .card {
+    min-width: 27%;
     .card-img-top{
         height: 50px;
     }

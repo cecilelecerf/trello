@@ -39,19 +39,19 @@ class WorkspacesController extends AppController
     {
 
         $workspace = $this->Workspaces->get($id, [
-            'contain' => ['Users', 'Categories.Cards', 'Logs'],
+            'contain' => ['Users', 'Categories.Cards.Managinguser', 'Logs', 'Categories.Cards.Creatoringuser'],
         ]);
 
 
         $categories = TableRegistry::getTableLocator()->get('Categories');
         $cards = TableRegistry::getTableLocator()->get('Cards');
-        $newCategories = $categories->newEmptyEntity();  
+        $usersworkspaces = $this->fetchTable('UsersWorkspaces');
+        $newCategory = $categories->newEmptyEntity();  
         $newCards = $cards->newEmptyEntity();   
-        $editCards = $cards->get($id, [
-            'contain' => [],
-        ]);
+        $newGuest = $usersworkspaces->newEmptyEntity();
+        $editCategory = $categories->get($id);
 
-        $this->set(compact('workspace', 'newCards', 'newCategories', 'editCards'));
+        $this->set(compact('workspace', 'newCards', 'newCategory', 'editCategory', 'newGuest'));
     }
 
     /**
@@ -68,6 +68,13 @@ class WorkspacesController extends AppController
             var_dump($workspace->admin);
             if ($this->Workspaces->save($workspace)) {
                 $this->Flash->success(__('The workspace has been saved.'));
+                $logs = $this->getTableLocator()->get('Logs');
+                $newLogs = $logs->newEntity([
+                    'content' => $workspace->name.': workspace créée',
+                    'user_id' => $this->request->getAttribute('identity')->id,
+                    'workspace_id' => $this->request->getData('workspace_id'),
+                ]);
+                $logs->save($newLogs);
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -93,6 +100,13 @@ class WorkspacesController extends AppController
             $workspace = $this->Workspaces->patchEntity($workspace, $this->request->getData());
             if ($this->Workspaces->save($workspace)) {
                 $this->Flash->success(__('The workspace has been saved.'));
+                $logs = $this->getTableLocator()->get('Logs');
+                $newLogs = $logs->newEntity([
+                    'content' => $workspace->name.': workspace modifiée',
+                    'user_id' => $this->request->getAttribute('identity')->id,
+                    'workspace_id' => $this->request->getData('workspace_id'),
+                ]);
+                $logs->save($newLogs);
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -122,14 +136,24 @@ class WorkspacesController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 
-    public function stats(){
-        $users = TableRegistry::getTableLocator()->get('Users');
-        $users = $users->find('list', ['limit' => 200])->all();
-        $categories = TableRegistry::getTableLocator()->get('Categories');
-        $categories = $categories->find('list', ['limit' => 200])->all();
-        $cards = TableRegistry::getTableLocator()->get('Cards');
-        $cards = $cards->find('list', ['limit' => 200])->all();
-        $workspaces = $this->Workspaces->find('list', ['limit' => 200])->all();
-        $this->set(compact('cards', 'users', 'categories', 'workspaces'));
+
+    public function deleteGuests($id = null){     
+        $this->request->allowMethod(['post', 'delete']);
+        $usersworkspaces = $this->fetchTable('UsersWorkspaces');
+        $guest = $usersworkspaces->get($id);
+        var_dump($guest);
+        $workspaceId = $guest->workspace_id;
+        if ($usersworkspaces->delete($guest)) {
+            $this->Flash->success(__('The guest has been deleted.'));
+        } else {
+            $this->Flash->error(__('The guest could not be deleted. Please, try again.'));
+        }
+
+        return $this->redirect(['action' => 'view', $workspaceId]);
     }
+
+    public function addGuest(){
+
+    }
+
 }
