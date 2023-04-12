@@ -46,12 +46,16 @@ class WorkspacesController extends AppController
         $categories = TableRegistry::getTableLocator()->get('Categories');
         $cards = TableRegistry::getTableLocator()->get('Cards');
         $usersworkspaces = $this->fetchTable('UsersWorkspaces');
+        
+        $users = $this->fetchTable('Users')->find('list')->all();
+        
+        $categoriesList = $categories->find('list')->all();
         $newCategory = $categories->newEmptyEntity();  
         $newCards = $cards->newEmptyEntity();   
         $newGuest = $usersworkspaces->newEmptyEntity();
         $editCategory = $categories->get($id);
 
-        $this->set(compact('workspace', 'newCards', 'newCategory', 'editCategory', 'newGuest'));
+        $this->set(compact(['workspace', 'newCards', 'newCategory', 'editCategory', 'newGuest', 'users', 'categoriesList'] ));
     }
 
     /**

@@ -136,8 +136,8 @@
                                                         ],
                                                     ]);
                                                     echo $this->Form->control('category_id', 
-                                                        ['type'=>'hidden', 
-                                                        'value' => $categories->id]);
+                                                        [
+                                                        'option'=> $categoriesList]);
                                                     echo $this->Form->control('workspace_id', 
                                                         ['type'=>'hidden', 
                                                         'value' => $workspace->id]);
@@ -358,13 +358,12 @@
                             <?php endforeach?>
                         </table>
                         <?= $this->Form->create($newGuest, ['url' => ['action' => 'addGuest']]) ?>
-                        <?php
+                        <?php  var_dump($users);
                             echo $this->Form->control('user_id' , [
-                                'label' => ['class' => 'form-label label'], 
+                                'label' => ['class' => 'form-label label'],
+                                'options' => $users,
                                 'class'=> ['form-control'],
-                                'templates' => [
-                                    'inputContainer' => '<div class="input-group-default mb-3 {{type}}{{required}}">{{content}}</div>'
-                                ],
+                            
                             ]);
                             echo $this->Form->control('workspace_id' , [
                                 'label' => ['class' => 'form-label label'], 
