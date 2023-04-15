@@ -19,6 +19,8 @@ class CardsController extends AppController
      */
     public function add()
     {
+        
+        $this->Authorization->skipAuthorization();
         $card = $this->Cards->newEmptyEntity();
         if ($this->request->is('post')) {
             $card = $this->Cards->patchEntity($card, $this->request->getData());
@@ -47,6 +49,8 @@ class CardsController extends AppController
      */
     public function edit($id = null)
     {
+        
+        $this->Authorization->skipAuthorization();
         $card = $this->Cards->get($id);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $card = $this->Cards->patchEntity($card, $this->request->getData());
@@ -77,6 +81,7 @@ class CardsController extends AppController
      */
     public function delete($id = null)
     {
+        $this->Authorization->skipAuthorization();
         
         $this->request->allowMethod(['post', 'delete']);
         $card = $this->Cards->get($id, [

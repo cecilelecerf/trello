@@ -71,8 +71,7 @@ class UsersWorkspacesTable extends Table
             ->notEmptyString('workspace_id');
 
         $validator
-            ->scalar('user_id')
-            ->maxLength('user_id', 255)
+            ->integer('user_id')
             ->notEmptyString('user_id');
 
         return $validator;

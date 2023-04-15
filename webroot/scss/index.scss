@@ -18,9 +18,13 @@ form {
 }
 
 #categories > .card {
+    height: fit-content;
     min-width: 27%;
     .card-img-top{
         height: 50px;
+    }
+    & > .card-header{
+        padding: 0px!important;
     }
 }
 
@@ -39,3 +43,11 @@ form {
 .hidden{
     display: none   !important;
 }
+
+.workspaces.index.content {
+    border-radius: 10px;
+}
+.workspace_member{
+    margin: auto 0!important;
+}
+

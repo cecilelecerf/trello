@@ -19,6 +19,8 @@ class CategoriesController extends AppController
      */
     public function add()
     {
+        
+        $this->Authorization->skipAuthorization(); 
         $logs = $this->getTableLocator()->get('Logs');
 
 
@@ -53,6 +55,8 @@ class CategoriesController extends AppController
      */
     public function edit($id = null)
     {
+        
+        $this->Authorization->skipAuthorization(); 
         $logs = $this->getTableLocator()->get('Logs');
 
         $category = $this->Categories->get($id, [
@@ -63,7 +67,7 @@ class CategoriesController extends AppController
             if ($this->Categories->save($category)) {
                 $this->Flash->success(__('The category has been saved.'), ['class'=>'alert alert-success']);
                 $newLogs = $logs->newEntity([
-                    'content' => $category->name.': catégorie modifiée',
+                    'content' => $category->name.' : catégorie modifiée',
                     'user_id' => $this->request->getAttribute('identity')->id,
                     'workspace_id' => $category->workspace_id,
                 ]);
@@ -86,6 +90,8 @@ class CategoriesController extends AppController
      */
     public function delete($id = null)
     {
+        
+        $this->Authorization->skipAuthorization(); 
         $logs = $this->getTableLocator()->get('Logs');
         
         $this->request->allowMethod(['post', 'delete']);
@@ -102,6 +108,6 @@ class CategoriesController extends AppController
             $this->Flash->error(__('The category could not be deleted. Please, try again.'), ['class'=>'alert alert-error']);
         }
 
-        return $this->redirect(['action' => 'index']);
+        return $this->redirect(['controller'=>'Workspaces','action' => 'view', $category->workspace_id]);
     }
 }

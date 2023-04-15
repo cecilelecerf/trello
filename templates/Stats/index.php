@@ -1,9 +1,3 @@
-<?php
-/**
- * @var \App\View\AppView $this
- * @var iterable<\App\Model\Entity\Workspace> $workspaces
- */
-?>
 <div class="pages stats  w-50">
     <h3 class="mb-3">Statistiques</h3>
     <section>

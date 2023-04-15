@@ -20,6 +20,8 @@ class WorkspacesController extends AppController
      */
     public function index()
     {
+        
+        $this->Authorization->skipAuthorization();
         $workspaces = $this->Workspaces->findByAdmin($this->request->getAttribute('identity')->id);
         // les transmets à la vue
 
@@ -41,21 +43,31 @@ class WorkspacesController extends AppController
         $workspace = $this->Workspaces->get($id, [
             'contain' => ['Users', 'Categories.Cards.Managinguser', 'Logs', 'Categories.Cards.Creatoringuser'],
         ]);
-
-
-        $categories = TableRegistry::getTableLocator()->get('Categories');
-        $cards = TableRegistry::getTableLocator()->get('Cards');
-        $usersworkspaces = $this->fetchTable('UsersWorkspaces');
         
+        
+        $this->Authorization->skipAuthorization();
+         
         $users = $this->fetchTable('Users')->find('list')->all();
         
-        $categoriesList = $categories->find('list')->all();
-        $newCategory = $categories->newEmptyEntity();  
+        $category = TableRegistry::getTableLocator()->get('Categories');
+        $newCategory = $category->newEmptyEntity();  
+        $editCategory = $category->get($id);
+        $categoriesList = $this->fetchTable('Categories')->find('list', [
+            'keyField' => 'id',
+            'valueField' => 'name'
+        ]);
+        $membersList = $this->fetchTable('Users')->find('list', [
+            'keyField' => 'id',
+            'valueField' => 'username'
+        ]);
+        $cards = TableRegistry::getTableLocator()->get('Cards');
         $newCards = $cards->newEmptyEntity();   
-        $newGuest = $usersworkspaces->newEmptyEntity();
-        $editCategory = $categories->get($id);
 
-        $this->set(compact(['workspace', 'newCards', 'newCategory', 'editCategory', 'newGuest', 'users', 'categoriesList'] ));
+        $usersworkspaces = $this->fetchTable('UsersWorkspaces');
+        $usersworkspacesList = $usersworkspaces->find('list')->all();
+        $newGuest = $usersworkspaces->newEmptyEntity(); 
+
+        $this->set(compact(['workspace', 'newCards', 'newCategory', 'editCategory', 'newGuest', 'users', 'categoriesList', 'membersList'] ));
     }
 
     /**
@@ -66,10 +78,10 @@ class WorkspacesController extends AppController
     public function add()
     {
         $workspace = $this->Workspaces->newEmptyEntity();
+        $this->Authorization->authorize($workspace);
         if ($this->request->is('post')) {
             $workspace = $this->Workspaces->patchEntity($workspace, $this->request->getData());
             $workspace->admin= $this->request->getAttribute('identity')->id;
-            var_dump($workspace->admin);
             if ($this->Workspaces->save($workspace)) {
                 $this->Flash->success(__('The workspace has been saved.'));
                 $logs = $this->getTableLocator()->get('Logs');
@@ -102,6 +114,7 @@ class WorkspacesController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $workspace = $this->Workspaces->patchEntity($workspace, $this->request->getData());
+            $this->Authorization->authorize($workspace);
             if ($this->Workspaces->save($workspace)) {
                 $this->Flash->success(__('The workspace has been saved.'));
                 $logs = $this->getTableLocator()->get('Logs');
@@ -131,6 +144,7 @@ class WorkspacesController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $workspace = $this->Workspaces->get($id);
+        $this->Authorization->authorize($workspace);
         if ($this->Workspaces->delete($workspace)) {
             $this->Flash->success(__('The workspace has been deleted.'));
         } else {
@@ -141,11 +155,11 @@ class WorkspacesController extends AppController
     }
 
 
-    public function deleteGuests($id = null){     
+    public function deleteGuests($id = null){    
+        $this->Authorization->skipAuthorization(); 
         $this->request->allowMethod(['post', 'delete']);
         $usersworkspaces = $this->fetchTable('UsersWorkspaces');
         $guest = $usersworkspaces->get($id);
-        var_dump($guest);
         $workspaceId = $guest->workspace_id;
         if ($usersworkspaces->delete($guest)) {
             $this->Flash->success(__('The guest has been deleted.'));
@@ -157,7 +171,19 @@ class WorkspacesController extends AppController
     }
 
     public function addGuest(){
-
+        $this->Authorization->skipAuthorization(); 
+        $usersworkspaces = $this->fetchTable('UsersWorkspaces');
+        $guest = $usersworkspaces->newEmptyEntity();
+        if ($this->request->is('post')) {
+            $guest = $usersworkspaces->patchEntity($guest, $this->request->getData());
+            $workspaceId = $guest->workspace_id;
+            if ($usersworkspaces->save($guest)) {
+                $this->Flash->success(__('The guest has been saved.'));
+            } else{
+                $this->Flash->error(__('The guest could not be saved. Please, try again.'));
+            }
+        }
+        return $this->redirect(['action' => 'view', $workspaceId]);
     }
 
 }

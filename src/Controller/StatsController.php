@@ -8,6 +8,7 @@ class StatsController extends AppController
 {
     public function index(){
         
+        $this->Authorization->skipAuthorization();
         $users = $this->fetchTable('Users')->find('list', ['limit' => 200])->all();
         $categories = $this->fetchTable('Categories')->find('list', ['limit' => 200])->all();
         $cards = $this->fetchTable('Cards')->find('list', ['limit' => 200])->all();

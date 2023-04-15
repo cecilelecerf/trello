@@ -114,6 +114,8 @@ class UsersController extends AppController
 
     public function login()
     {
+        
+        $this->Authorization->skipAuthorization();  
         $this->request->allowMethod(['get', 'post']);
         $result = $this->Authentication->getResult();
         // indépendamment de POST ou GET, rediriger si l'utilisateur est connecté
