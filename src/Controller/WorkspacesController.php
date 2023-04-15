@@ -53,13 +53,24 @@ class WorkspacesController extends AppController
         $newCategory = $category->newEmptyEntity();  
         $editCategory = $category->get($id);
         $categoriesList = $this->fetchTable('Categories')->find('list', [
+            'conditions' => ['Categories.workspace_id' => $workspace->id],
             'keyField' => 'id',
             'valueField' => 'name'
         ]);
         $membersList = $this->fetchTable('Users')->find('list', [
             'keyField' => 'id',
             'valueField' => 'username'
-        ]);
+        ])->notMatching('UsersWorkspaces', function ($q) use ($id) {
+            return $q->where(['UsersWorkspaces.workspace_id' => $id]);
+        });;
+
+        $memberList = $this->fetchTable('Users')->find('list', [
+            'keyField' => 'id',
+            'valueField' => 'username'
+        ])->matching('UsersWorkspaces', function ($q) use ($id) {
+            return $q->where(['UsersWorkspaces.workspace_id' => $id]);
+        });
+
         $cards = TableRegistry::getTableLocator()->get('Cards');
         $newCards = $cards->newEmptyEntity();   
 
@@ -67,7 +78,7 @@ class WorkspacesController extends AppController
         $usersworkspacesList = $usersworkspaces->find('list')->all();
         $newGuest = $usersworkspaces->newEmptyEntity(); 
 
-        $this->set(compact(['workspace', 'newCards', 'newCategory', 'editCategory', 'newGuest', 'users', 'categoriesList', 'membersList'] ));
+        $this->set(compact(['workspace', 'newCards', 'newCategory', 'editCategory', 'newGuest', 'users', 'categoriesList', 'membersList', 'memberList'] ));
     }
 
     /**

@@ -58,7 +58,6 @@ class UsersTable extends Table
         ]);
         $this->hasMany('Cards', [
             'foreignKey' => 'manager',
-            // 'foreignKey' => 'creator'
         ]);
         
         $this->hasMany('Cards', [

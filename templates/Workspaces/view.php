@@ -143,7 +143,7 @@
                                                     ?>
     
                                                     <?= $this->Form->label('Manager', null, ['class' => 'text-secondary mt-3']); ?>
-                                                    <?= $this->Form->select('manager' , $membersList, [
+                                                    <?= $this->Form->select('manager' , $memberList, [
                                                         'label' => ['class' => 'text-secondary'],
                                                         'class'=>['form-control'],
                                                         'templates' => [
@@ -288,18 +288,16 @@
                                     </div>   
                                     <div class="modal-footer">
                                         <?= $this->Form->button(__('Submit'), ['class' => 'btn btn-primary']) ?>
-                                        <?= $this->Form->postLink(__('Delete Category'), 
+                                        <?= $this->Form->end() ?>
+                                        <?= $this->Form->postLink('Delete', 
                                             ['controller'=>'Categories','action' => 'delete', $categories->id], 
-                                            ['confirm' => __('Are you sure you want to delete # {0}?', $categories->name), 
-                                            'block' => true,
-                                            'class' => 'btn btn-outline-primary text-center mb-3'
-                                            ]) 
-                                        ?>
-                             
+                                            ['confirm' => __('Are you sure you want to delete # {0}?', $categories->name),
+                                            'class' => 'btn btn-outline-primary'
+                                        ])?>                           
                                     </div>
+                              
                                 </div>
                             </div>
-                        <?= $this->Form->end() ?>
                      
                     </section>
                 </li>
