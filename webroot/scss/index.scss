@@ -14,8 +14,11 @@ form {
     margin-bottom: 10px;
     label{
         margin-right: 10px;
+        color: #6C757D;
+
     }
 }
+
 
 #categories > .card {
     height: fit-content;
@@ -50,4 +53,7 @@ form {
 .workspace_member{
     margin: auto 0!important;
 }
-
+.card .img-fluid.rounded-start{
+    object-fit: cover;
+    height: 100%!important;
+}

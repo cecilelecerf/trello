@@ -62,7 +62,7 @@ class WorkspacesController extends AppController
             'valueField' => 'username'
         ])->notMatching('UsersWorkspaces', function ($q) use ($id) {
             return $q->where(['UsersWorkspaces.workspace_id' => $id]);
-        });;
+        });
 
         $memberList = $this->fetchTable('Users')->find('list', [
             'keyField' => 'id',
@@ -88,8 +88,9 @@ class WorkspacesController extends AppController
      */
     public function add()
     {
+        $this->Authorization->skipAuthorization();
         $workspace = $this->Workspaces->newEmptyEntity();
-        $this->Authorization->authorize($workspace);
+        // $this->Authorization->authorize($workspace);
         if ($this->request->is('post')) {
             $workspace = $this->Workspaces->patchEntity($workspace, $this->request->getData());
             $workspace->admin= $this->request->getAttribute('identity')->id;
@@ -120,9 +121,17 @@ class WorkspacesController extends AppController
      */
     public function edit($id = null)
     {
+        
+        $this->Authorization->skipAuthorization();
         $workspace = $this->Workspaces->get($id, [
             'contain' => ['Users'],
         ]);
+        $membersList = $this->fetchTable('Users')->find('list', [
+            'keyField' => 'id',
+            'valueField' => 'username'
+        ])->notMatching('UsersWorkspaces', function ($q) use ($id) {
+            return $q->where(['UsersWorkspaces.workspace_id' => $id]);
+        });
         if ($this->request->is(['patch', 'post', 'put'])) {
             $workspace = $this->Workspaces->patchEntity($workspace, $this->request->getData());
             $this->Authorization->authorize($workspace);
@@ -141,7 +150,7 @@ class WorkspacesController extends AppController
             $this->Flash->error(__('The workspace could not be saved. Please, try again.'));
         }
         $users = $this->Workspaces->Users->find('list', ['limit' => 200])->all();
-        $this->set(compact('workspace', 'users'));
+        $this->set(compact('workspace', 'users', 'membersList'));
     }
 
     /**

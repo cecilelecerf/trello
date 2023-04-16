@@ -64,7 +64,7 @@
 
                                             <section class="modal-body">
                                                 <p><?= h($cards->description)?></p>
-                                                <p><?= h($categories->name) ?></p>
+                                                <p><span class="text-secondary">Category : </span><?= h($categories->name) ?></p>
                                                 <?php if($cards->manager !== null):?>
                                                     <p><span class="text-secondary">Manager : </span><?= h($cards->managinguser->username)?></p>
                                                 <?php endif?>
@@ -116,10 +116,8 @@
                                                 </div>
 
                                                 <div class="modal-body">
-
-                                                    <?= $this->Form->label('Description', null, ['class' => 'text-secondary']); ?>
                                                     <?= $this->Form->control('description' , [
-                                                            'label' => ['class' => 'hidden'], 
+                                                            'label' => ['text' => 'Description'], 
                                                             'class'=> ['form-control'],
                                                             'type' => 'textarea',
                                                             'templates' => [
@@ -128,9 +126,8 @@
                                                         ]);
                                                     ?>
                                                     
-                                                    <?= $this->Form->label('Category', null, ['class' => 'text-secondary']); ?>
+                                                    <?= $this->Form->label('Category'); ?>
                                                     <?= $this->Form->select('category_id', $categoriesList, [
-                                                        'label' => ['class' => 'text-secondary'],
                                                         'class'=>['form-control'],
                                                         'templates' => [
                                                             'inputContainer' => '<div class="input-group-default mb-3 {{type}}{{required}}">{{content}}</div>'
@@ -142,9 +139,8 @@
                                                             'value' => $workspace->id]);
                                                     ?>
     
-                                                    <?= $this->Form->label('Manager', null, ['class' => 'text-secondary mt-3']); ?>
+                                                    <?= $this->Form->label('Manager', null, ['class' => ' mt-3']); ?>
                                                     <?= $this->Form->select('manager' , $memberList, [
-                                                        'label' => ['class' => 'text-secondary'],
                                                         'class'=>['form-control'],
                                                         'templates' => [
                                                             'inputContainer' => '<div class="input-group-default mb-3 {{type}}{{required}}">{{content}}</div>'
@@ -211,9 +207,8 @@
                                                 'type'=>'hidden', 
                                                 'value' => $this->request->getAttribute('identity')->id
                                             ]);
-                                            echo $this->Form->label('Manager', null, ['class' => 'text-secondary']);
+                                            echo $this->Form->label('Manager');
                                             echo $this->Form->select('manager' , $membersList, [
-                                                'label' => ['class' => 'text-secondary'],
                                                 'class'=>['form-control'],
                                                 'templates' => [
                                                     'inputContainer' => '<div class="input-group-default mb-3 {{type}}{{required}}">{{content}}</div>'

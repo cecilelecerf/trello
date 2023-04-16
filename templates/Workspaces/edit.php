@@ -11,23 +11,25 @@
         <legend><?= __('Edit Workspace') ?></legend>
         <?php
             echo $this->Form->control('name', [
-                'label' => ['class' => 'form-label label'], 
+                'label' => ['class' => 'form-label label '], 
                 'class'=> ['form-control'],
                 'templates' => [
                     'inputContainer' => '<div class="input-group-default mb-3 {{type}}{{required}}">{{content}}</div>'
                 ],
             ]);
-            echo $this->Form->control('admin', [
-                'label' => ['class' => 'form-label label'], 
+            echo $this->Form->label('Admin', null, ['class' => 'form-label label']);
+            echo $this->Form->select('admin', $membersList, [
                 'class'=> ['form-control'],
                 'templates' => [
                     'inputContainer' => '<div class="input-group-default mb-3 {{type}}{{required}}">{{content}}</div>'
                 ],
             ]);
-            echo $this->Form->control('users._ids', ['options' => $users, 'label' => ['class' => 'form-label label'], 
-            'class'=> ['form-control'],
-            'templates' => [
-                'inputContainer' => '<div class="input-group-default mb-3 {{type}}{{required}}">{{content}}</div>'
+            echo $this->Form->control('users._ids', [
+                'options' => $users, 
+                'label' => ['text'=>'Membres', 'class' => 'form-label label mt-3'], 
+                'class'=> ['form-control'],
+                'templates' => [
+                    'inputContainer' => '<div class="input-group-default mb-3 {{type}}{{required}}">{{content}}</div>'
             ],]);
         ?>
     </fieldset>
