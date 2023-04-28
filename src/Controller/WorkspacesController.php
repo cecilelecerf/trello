@@ -21,9 +21,13 @@ class WorkspacesController extends AppController
     public function index()
     {
         
-        $this->Authorization->skipAuthorization();
+    
         $workspaces = $this->Workspaces->findByAdmin($this->request->getAttribute('identity')->id);
         // les transmets à la vue
+        $workspace = $workspaces;
+        
+        
+        $this->Authorization->skipAuthorization();  
 
 
 

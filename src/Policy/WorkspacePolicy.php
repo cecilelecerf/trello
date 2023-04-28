@@ -3,9 +3,7 @@ declare(strict_types=1);
 
 namespace App\Policy;
 
-
 use App\Model\Entity\Workspace;
-use App\Model\Entity\UsersWorkspaces;
 use Authorization\IdentityInterface;
 
 /**
@@ -22,7 +20,6 @@ class WorkspacePolicy
      */
     public function canCreate(IdentityInterface $user, Workspace $workspace)
     {
-        return true;
     }
 
     /**
@@ -34,8 +31,6 @@ class WorkspacePolicy
      */
     public function canUpdate(IdentityInterface $user, Workspace $workspace)
     {
-        // Les utilisateurs authentifiés ne peuvent modifier que leurs articles.
-        return $this->isAdmin($user, $workspace);
     }
 
     /**
@@ -47,7 +42,6 @@ class WorkspacePolicy
      */
     public function canDelete(IdentityInterface $user, Workspace $workspace)
     {
-        return $this->isAdmin($user, $workspace);
     }
 
     /**
@@ -57,19 +51,8 @@ class WorkspacePolicy
      * @param App\Model\Entity\Workspace $workspace
      * @return bool
      */
-    public function canView(IdentityInterface $user, UsersWorkspaces $usersworkspaces)
+    public function canView(IdentityInterface $user, Workspace $workspace)
     {
-        // Les utilisateurs authentifiés ne peuvent modifier que leurs articles.
-        return $this->isMember($user, $usersworkspaces);
-    }
-
-    protected function isAdmin(IdentityInterface $user, Workspace $workspace)
-    {
-        return $workspace->admin === $user->getIdentifier();
-    }
-
-    protected function isMember(IdentityInterface $user, UsersWorkspaces $usersworkspaces)
-    {
-        return $usersworkspaces->user_id === $user->getIdentifier();
+        return true;
     }
 }

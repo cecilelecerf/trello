@@ -107,13 +107,13 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
             // `new RoutingMiddleware($this, '_cake_routes_')`
             ->add(new RoutingMiddleware($this))
             
-           ->add(new AuthenticationMiddleware($this))
-
+            
             // Parse various types of encoded request bodies so that they are
             // available as array through $request->getData()
             // https://book.cakephp.org/4/en/controllers/middleware.html#body-parser-middleware
             ->add(new BodyParserMiddleware())
-
+            
+            ->add(new AuthenticationMiddleware($this))
             ->add(new AuthorizationMiddleware($this))
 
             // Cross Site Request Forgery (CSRF) Protection Middleware
@@ -153,9 +153,10 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
         $this->addOptionalPlugin('Bake');
 
         $this->addPlugin('Migrations');
-        $this->addPlugin('Authorization');
-
+        
         // Load more plugins here
+        $this->addPlugin('Authentication');
+        $this->addPlugin('Authorization');
     }
 
 

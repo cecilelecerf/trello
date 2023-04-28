@@ -5,11 +5,9 @@
         <h4>Les utilisateurs les plus actifs sont :</h4>
         <ol class="list-group list-group-flush list-group-numbered">
             <?php foreach ($topUsers as $user):?>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
+                <li class="list-group-item w-25">
                     <!-- Nom de la personne -->
                     <?= h($user->user->username) ?>
-                    <!-- nombre de workspace -->
-                    <span class="badge bg-primary rounded-pill">14</span>
                     
                 </li>
             <?php endforeach ?>

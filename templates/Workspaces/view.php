@@ -421,13 +421,12 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="CategoryAddLabel"><?= __('Add Card') ?></h1>
+                <h1 class="modal-title fs-5" id="CategoryAddLabel"><?= __('Add Category') ?></h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <?= $this->Form->create($newCategory, ['url' => ['controller' => 'Categories', 'action' => 'add']]) ?>
                 <fieldset class="mb-3">
-                    <legend><?= __('Add Category') ?></legend>
                     <?php
                         echo $this->Form->control('name', [
                             'label' => ['class' => 'form-label label'], 
