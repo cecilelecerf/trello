@@ -12,37 +12,6 @@ namespace App\Controller;
 class LogsController extends AppController
 {
     /**
-     * Index method
-     *
-     * @return \Cake\Http\Response|null|void Renders view
-     */
-    public function index()
-    {
-        $this->paginate = [
-            'contain' => ['Users', 'Workspaces'],
-        ];
-        $logs = $this->paginate($this->Logs);
-
-        $this->set(compact('logs'));
-    }
-
-    /**
-     * View method
-     *
-     * @param string|null $id Log id.
-     * @return \Cake\Http\Response|null|void Renders view
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function view($id = null)
-    {
-        $log = $this->Logs->get($id, [
-            'contain' => ['Users', 'Workspaces'],
-        ]);
-
-        $this->set(compact('log'));
-    }
-
-    /**
      * Add method
      *
      * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.

@@ -51,6 +51,8 @@ class WorkspacesTable extends Table
 
         $this->hasMany('Categories', [
             'foreignKey' => 'workspace_id',
+            'dependent' => true,
+            'cascadeCallbacks'=>true,
         ]);
         $this->hasMany('Logs', [
             'foreignKey' => 'workspace_id',

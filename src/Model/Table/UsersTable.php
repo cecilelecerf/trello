@@ -43,7 +43,7 @@ class UsersTable extends Table
         parent::initialize($config);
 
         $this->setTable('users');
-        $this->setDisplayField('id');
+        $this->setDisplayField('username');
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
@@ -55,6 +55,13 @@ class UsersTable extends Table
             'foreignKey' => 'user_id',
             'targetForeignKey' => 'workspace_id',
             'joinTable' => 'users_workspaces',
+        ]);
+        $this->hasMany('Cards', [
+            'foreignKey' => 'manager',
+        ]);
+        
+        $this->hasMany('Cards', [
+            'foreignKey' => 'creator',
         ]);
     }
 

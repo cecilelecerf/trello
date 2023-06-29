@@ -27,6 +27,7 @@ $checkConnection = function (string $name) {
     $connected = false;
     try {
         $connection = ConnectionManager::get($name);
+        
         $connected = $connection->connect();
     } catch (Exception $connectionError) {
         $error = $connectionError->getMessage();
@@ -168,24 +169,7 @@ endif;
                         <?php endif; ?>
                         </ul>
                     </div>
-                    <div class="column">
-                        <h4>DebugKit</h4>
-                        <ul>
-                        <?php if (Plugin::isLoaded('DebugKit')) : ?>
-                            <li class="bullet success">DebugKit is loaded.</li>
-                            <?php
-                            $result = $checkConnection('debug_kit');
-                            ?>
-                            <?php if ($result['connected']) : ?>
-                                <li class="bullet success">DebugKit can connect to the database.</li>
-                            <?php else : ?>
-                                <li class="bullet problem">DebugKit is <strong>not</strong> able to connect to the database.<br /><?= $result['error'] ?></li>
-                            <?php endif; ?>
-                        <?php else : ?>
-                            <li class="bullet problem">DebugKit is <strong>not</strong> loaded.</li>
-                        <?php endif; ?>
-                        </ul>
-                    </div>
+                  
                 </div>
                 <hr>
                 <div class="row">
